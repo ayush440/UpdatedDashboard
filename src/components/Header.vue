@@ -1,14 +1,26 @@
 <template>
-  <header class="header mb-6">
-    <div class="header-content ">
-      <button @click="$emit('toggle-menu')" class="menu-toggle md:hidden">
-        <i class="icon-menu"></i>
-      </button>
-      <h1>Hello {{ authStore.user?.name || 'Guest' }} 👋🏻</h1>
-      <!-- <div class="mode-toggle">
-        <button :class="{ active: mode === 'Paper' }" @click="setMode('Paper')">Paper</button>
-        <button :class="{ active: mode === 'Live' }" @click="setMode('Live')">Live</button>
-      </div> -->
+  <header class="bg-white shadow-sm rounded-lg w-full max-w-7xl mx-auto mb-6 mt-5">
+    <div class="px-6 py-4 flex items-center justify-between">
+      <div class="flex items-center">
+        <button @click="$emit('toggle-menu')" class="mr-4 md:hidden">
+          <MenuIcon class="h-6 w-6" />
+        </button>
+        <h1 class="text-xl font-semibold">Hello {{ authStore.user?.name || 'Roshni' }} 👋🏻</h1>
+      </div>
+      <div class="flex items-center bg-gray-100 rounded-full">
+        <button 
+          :class="['px-4 py-2 rounded-full', mode === 'Paper' ? 'bg-indigo-600 text-white' : 'text-gray-700']"
+          @click="setMode('Paper')"
+        >
+          Paper
+        </button>
+        <button 
+          :class="['px-4 py-2 rounded-full', mode === 'Live' ? 'bg-indigo-600 text-white' : 'text-gray-700']"
+          @click="setMode('Live')"
+        >
+          Live
+        </button>
+      </div>
     </div>
   </header>
 </template>
@@ -16,62 +28,35 @@
 <script setup>
 import { ref } from 'vue'
 import { useAuthStore } from '../stores/auth'
+import { MenuIcon } from 'lucide-vue-next'
 
 const authStore = useAuthStore()
 const mode = ref('Paper')
 const setMode = (newMode) => {
   mode.value = newMode
 }
+
+defineEmits(['toggle-menu'])
 </script>
 
 <style scoped>
-.header {
-  background-color: white;
-  border-bottom: 1px solid #e5e7eb;
-  padding: 10px 20px;
+.header-container {
+  width: 100%;
+  max-width: 1142px;
+  height: 88.57px;
+  margin: 0 auto;
+  border-radius: 3.77px;
 }
 
 .header-content {
-  max-width: 1200px;
-  margin: 0 auto;
+  width: 100%;
+  height: 100%;
+  padding: 24.5px 26.38px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-}
-
-.menu-toggle {
-  background: none;
-  border: none;
-  font-size: 1.5rem;
-  cursor: pointer;
-}
-
-.mode-toggle {
-  display: flex;
-  background-color: #f3f4f6;
-  border-radius: 20px;
-  overflow: hidden;
-}
-
-.mode-toggle button {
-  padding: 8px 16px;
-  border: none;
-  background-color: transparent;
-  cursor: pointer;
-}
-
-.mode-toggle button.active {
-  background-color: #5D5FEF;
-  color: white;
-}
-
-@media (min-width: 769px) {
-  .header {
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
-    border-bottom-right-radius: 10px;
-    border-bottom-left-radius: 10px;
-    margin-top: 20px;
-  }
+  background-color: white;
+  box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.05);
+  border-radius: 3.77px;
 }
 </style>

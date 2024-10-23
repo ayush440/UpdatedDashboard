@@ -118,7 +118,7 @@ onUnmounted(() => {
 
 <style scoped>
 .donut-chart {
-  height: 350px;
+  height: 166px;
   width: 100%;
   max-width: 500px;
   margin: 0 auto;
@@ -131,4 +131,5 @@ onUnmounted(() => {
     max-width: 100%;
   }
 }
+
 </style>
