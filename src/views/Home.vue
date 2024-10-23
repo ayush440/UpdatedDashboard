@@ -55,7 +55,7 @@
 import { ref, onMounted } from 'vue'
 import { useAuthStore } from '../stores/auth'
 import DonutChart from '../components/DonutChart.vue'
-import StatCard from '../components/StatCard.vue'
+import StatCard from '../components/Statcard.vue'
 import PositionsTable from '../components/PositionsTable.vue'
 import Header from '../components/Header.vue'
 
