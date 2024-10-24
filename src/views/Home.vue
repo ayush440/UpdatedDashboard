@@ -13,6 +13,7 @@
             
             <DonutChart :data="currentData.profitData" />
             
+            
             <div class="bg-white rounded-lg shadow-sm p-6">
               <h2 class="text-lg font-semibold mb-4">Today's Sales</h2>
               
