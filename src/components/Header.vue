@@ -1,5 +1,5 @@
 <template>
-  <header class="bg-white shadow-sm rounded-lg w-full max-w-7xl mx-auto mb-6 mt-5">
+  <header class="bg-white shadow-sm rounded-lg w-full max-w-7xl mx-auto mt-1">
     <div class="px-6 py-4 flex items-center justify-between">
       <div class="flex items-center">
         <button @click="$emit('toggle-menu')" class="mr-4 md:hidden">

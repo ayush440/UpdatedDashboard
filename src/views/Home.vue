@@ -1,21 +1,23 @@
 <template>
-  <div class="">
+  <div class="h-screen bg-[#e3f5ff]">
     <Sidebar :isOpen="isSidebarOpen" @close="toggleSidebar" />
     <div class="flex flex-col overflow-hidden">
-      <main class="flex-1 overflow-x-hidden overflow-y-auto bg-[#e3f5ff]">
-        <div class="px-5">
+      <main class="flex-1 overflow-x-hidden overflow-y-auto">
+        <div class="px-2 py-1">
+          
           <Header @toggle-menu="toggleSidebar" :mode="mode" @set-mode="setMode" />
         </div>
-        <div class="container mx-auto px-6 py-1">
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+        <div class="container mx-auto px-2 py-1">
+         
+          <div class="grid grid-cols-1 md:grid-cols-[40%_60%] gap-2 mb-2">
+            
+            <DonutChart :data="currentData.profitData" />
+            
             <div class="bg-white rounded-lg shadow-sm p-6">
-              <h2 class="text-xl font-semibold mb-4">Today's profit</h2>
-              <DonutChart :data="currentData.profitData" />
-            </div>
-            <div class="bg-white rounded-lg shadow-sm p-6">
-              <h2 class="text-xl font-semibold mb-2">Today's Sales</h2>
-              <p class="text-sm text-gray-500 mb-4">Sales Summary</p>
-              <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <h2 class="text-lg font-semibold mb-4">Today's Sales</h2>
+              
+              <p class="text-xs text-gray-500 mb-4">Sales Summary</p>
+              <div class="grid grid-cols-3 gap-4">
                 <StatCard
                   v-for="(stat, index) in currentData.statsData"
                   :key="index"
@@ -27,7 +29,7 @@
               </div>
             </div>
           </div>
-          <div class="bg-white rounded-lg shadow-sm overflow-hidden">
+          <div class="bg-white rounded-lg shadow-sm">
             <PositionsTable :positions="currentPositions" />
           </div>
         </div>
@@ -57,7 +59,6 @@ const toggleSidebar = () => {
 
 const setMode = (newMode) => {
   mode.value = newMode
-  // Fetch positions when mode changes
   if (mode.value === 'Paper') {
     paperPositionStore.fetchPositions()
   } else {
@@ -103,14 +104,11 @@ const currentData = computed(() => {
 })
 
 onMounted(() => {
-  // Fetch both Paper and Live positions on mount
   paperPositionStore.fetchPositions()
   positionStore.fetchPositions()
 })
 
-// Watch for changes in the positions and recalculate data
 watch([() => paperPositionStore.positions, () => positionStore.positions], () => {
-  // Force a re-computation of currentData
   currentData.value
 }, { deep: true })
 </script>

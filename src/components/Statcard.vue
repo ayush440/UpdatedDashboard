@@ -6,7 +6,7 @@
       </div>
       <h3 class="text-3xl font-bold text-gray-900 mb-1">{{ value }}</h3>
       <p class="text-sm text-gray-500 mb-1">{{ title }}</p>
-      <span :class="{ 'text-green-500': isPositive, 'text-red-500': !isPositive }" class="text-xs font-medium">
+      <span :class="{ 'text-blue-500': isPositive, 'text-red-500': !isPositive }" class="text-xs font-medium">
         {{ change }}
       </span>
     </div>

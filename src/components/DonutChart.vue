@@ -1,11 +1,22 @@
 <template>
-  <div class="donut-chart">
-    <canvas ref="chartRef"></canvas>
+  <div class="donut-chart-container">
+
+    <div class="donut-chart">
+      
+      <canvas ref="chartRef"></canvas>
+    </div>
+    <div class="legend-wrapper">
+      <div v-for="(item, index) in chartData" :key="index" class="legend-item">
+        <span class="legend-color" :style="{ backgroundColor: item.color }"></span>
+        <span class="legend-name">{{ item.name }}</span>
+        <span class="legend-value">{{ item.percentage }}%</span>
+      </div>
+    </div>
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted, watch } from 'vue';
+import { ref, onMounted, onUnmounted, watch, computed } from 'vue';
 import Chart from 'chart.js/auto';
 
 const props = defineProps({
@@ -18,31 +29,25 @@ const props = defineProps({
 const chartRef = ref(null);
 let chart = null;
 
+const chartData = computed(() => {
+  const total = props.data.reduce((sum, item) => sum + item.value, 0);
+  const colors = ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0'];
+  return props.data.map((item, index) => ({
+    ...item,
+    percentage: ((item.value / total) * 100).toFixed(1),
+    color: colors[index] || item.color
+  }));
+});
+
 const createChart = () => {
   const ctx = chartRef.value.getContext('2d');
   chart = new Chart(ctx, {
     type: 'doughnut',
     data: {
-      labels: props.data.map(item => item.name),
+      labels: chartData.value.map(item => item.name),
       datasets: [{
-        data: props.data.map(item => item.value),
-        backgroundColor: (context) => {
-          const chart = context.chart;
-          const { ctx, chartArea } = chart;
-          if (!chartArea) {
-            return null;
-          }
-
-          return props.data.map((item, index) => {
-            if (index === 0 || index === 1) {
-              const gradient = ctx.createLinearGradient(0, chartArea.bottom, 0, chartArea.top);
-              gradient.addColorStop(0, item.color);
-              gradient.addColorStop(1, '#ffffff');
-              return gradient;
-            }
-            return item.color;
-          });
-        },
+        data: chartData.value.map(item => item.value),
+        backgroundColor: chartData.value.map(item => item.color),
         borderWidth: 0,
         borderRadius: 5
       }]
@@ -52,45 +57,23 @@ const createChart = () => {
       maintainAspectRatio: false,
       plugins: {
         legend: {
-          position: 'right',
-          labels: {
-            usePointStyle: true,
-            pointStyle: 'circle',
-            padding: 20,
-            font: {
-              family: "'Helvetica Neue', 'Helvetica', 'Arial', sans-serif",
-              size: 12
-            },
-            generateLabels: (chart) => {
-              const data = chart.data;
-              if (data.labels.length && data.datasets.length) {
-                return data.labels.map((label, i) => {
-                  return {
-                    text: `${label} ${data.datasets[0].data[i]}`,
-                    fillStyle: props.data[i].color,
-                    hidden: isNaN(data.datasets[0].data[i]),
-                    index: i
-                  };
-                });
-              }
-              return [];
-            }
-          }
+          display: false
         },
         tooltip: {
-          enabled: true
+          enabled: false
         }
       },
       cutout: '50%',
-      spacing: 5
+      spacing: 2
     }
   });
 }
 
 const updateChart = () => {
   if (chart) {
-    chart.data.labels = props.data.map(item => item.name);
-    chart.data.datasets[0].data = props.data.map(item => item.value);
+    chart.data.labels = chartData.value.map(item => item.name);
+    chart.data.datasets[0].data = chartData.value.map(item => item.value);
+    chart.data.datasets[0].backgroundColor = chartData.value.map(item => item.color);
     chart.update();
   }
 };
@@ -117,18 +100,73 @@ watch(() => props.data, updateChart, { deep: true });
 </script>
 
 <style scoped>
+.donut-chart-container {
+  display: flex;
+  align-items: center;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
 .donut-chart {
-  height: 166px;
+  flex: 1;
+  height: 200px;
   width: 100%;
-  max-width: 500px;
-  margin: 0 auto;
-  font-family: 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
+  max-width: 200px;
+  margin: 0;
+}
+
+.legend-wrapper {
+  flex: 1;
+  padding-left: 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.legend-color {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-right: 12px;
+}
+
+.legend-name {
+  flex: 1;
+  font-size: 14px;
+  color: #333;
+}
+
+.legend-value {
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+  margin-left: 12px;
 }
 
 @media (max-width: 768px) {
+  .donut-chart-container {
+    flex-direction: column;
+    align-items: center;
+  }
+
   .donut-chart {
     height: 300px;
     max-width: 100%;
+    margin: 20px 0;
+  }
+
+  .legend-wrapper {
+    padding-left: 0;
+    margin-top: 20px;
+    
   }
 }
 </style>

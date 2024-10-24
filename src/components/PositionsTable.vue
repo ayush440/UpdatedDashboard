@@ -5,6 +5,15 @@
       <button @click="$emit('view-all')" class="text-indigo-600 hover:text-indigo-800">All</button>
     </div>
     <div class="space-y-2">
+      <!-- Header row -->
+      <div class="grid grid-cols-[2fr_1fr_1fr_1fr_40px] items-center px-4 py-3 font-medium text-gray-700">
+        <div>STRATEGY NAME</div>
+        <div>STRATEGY NAME</div>
+        <div>STRATEGY NAME</div>
+        <div>STRATEGY NAME</div>
+        <div></div>
+      </div>
+      <!-- Position rows -->
       <div v-for="(position, index) in positions" :key="position.id" class="relative">
         <div
           :class="[
@@ -14,7 +23,7 @@
           ]"
           @click="toggleExpand(position.id)"
         >
-          <div class="grid grid-cols-5 items-center px-4 py-3">
+          <div class="grid grid-cols-[2fr_1fr_1fr_1fr_40px] items-center px-4 py-3">
             <div>{{ position.strategy }}</div>
             <div>{{ position.quantity }}</div>
             <div>{{ position.side }}</div>
@@ -26,7 +35,11 @@
           </div>
         </div>
         <div v-if="expandedRows[position.id]" :class="[index % 2 === 0 ? 'bg-[#E3F5FF]' : 'bg-[#EDF4FF]', 'rounded-b-lg']">
-          <div class="px-4 py-3 grid grid-cols-4 gap-4">
+          <div class="px-4 py-3 grid grid-cols-[2fr_1fr_1fr_1fr] gap-4">
+            <div>
+              <p class="text-sm font-medium text-gray-500">Strategy</p>
+              <p class="mt-1 text-sm text-gray-900">{{ position.strategy }}</p>
+            </div>
             <div>
               <p class="text-sm font-medium text-gray-500">Broker</p>
               <p class="mt-1 text-sm text-gray-900">{{ position.broker }}</p>
@@ -39,12 +52,12 @@
               <p class="text-sm font-medium text-gray-500">Sell Price</p>
               <p class="mt-1 text-sm text-gray-900">{{ position.sellPrice }}</p>
             </div>
-            <div class="flex items-center justify-end">
-              <button class="bg-[#EDF4FF] text-indigo-600 px-4 py-2 rounded-lg text-sm border border-indigo-200 transition-all duration-150 flex items-center space-x-2 hover:border-indigo-800 hover:bg-[#EDF4FF] hover:shadow-glow">
-    <RefreshCcwIcon class="w-4 h-4" />
-    <span>Square off</span>
-  </button>
-            </div>
+          </div>
+          <div class="px-4 py-3 flex justify-end">
+            <button class="bg-[#EDF4FF] text-indigo-600 px-4 py-2 rounded-lg text-sm border border-indigo-200 transition-all duration-150 flex items-center space-x-2 hover:border-indigo-800 hover:bg-[#EDF4FF] ">
+              <RefreshCcwIcon class="w-4 h-4" />
+              <span>Square off</span>
+            </button>
           </div>
         </div>
       </div>
