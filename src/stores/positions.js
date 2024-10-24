@@ -1,6 +1,6 @@
-import { defineStore } from 'pinia'
+import { defineStore } from 'pinia';
 
-export const usePositionStore = defineStore('position', {
+export const usePositionStore = defineStore('positions', {
   state: () => ({
     positions: [
       {
@@ -14,7 +14,7 @@ export const usePositionStore = defineStore('position', {
         buyPrice: '09:13:54@ 0',
         sellPrice: '09:13:54@ 0',
         status: 'CLOSED',
-        pnl: 0
+        pnl: 0,
       },
       {
         id: 2,
@@ -27,29 +27,81 @@ export const usePositionStore = defineStore('position', {
         buyPrice: '09:13:54@ 0',
         sellPrice: '09:13:54@ 7',
         status: 'CLOSED',
-        pnl: 0
+        pnl: 0,
       },
       {
         id: 3,
-        strategy: 'DOMAIN TREND(NIFTY)',
+        strategy: 'DOMAIN REVERSAL(BANKNIFTY)',
         broker: 'Angel (A537412)',
-        script: 'NIFTY15FEB2420000PE(NFO)',
+        script: 'NIFTY15FEB2423000CE(NFO)',
+        product: 'INTRADAY',
+        side: 'BUY',
+        quantity: 300,
+        buyPrice: '09:15:00@ 3',
+        sellPrice: '09:30:00@ 6',
+        status: 'OPEN',
+        pnl: 900,
+      },
+      {
+        id: 4,
+        strategy: 'DOMAIN SCALPING(NIFTY)',
+        broker: 'Zerodha (Z123456)',
+        script: 'NIFTY15FEB2421000PE(NFO)',
         product: 'INTRADAY',
         side: 'SELL',
-        quantity: 551,
-        buyPrice: '_',
-        sellPrice: '09:13:54@ 5',
-        status: 'OPEN',
-        pnl: 1653
+        quantity: 200,
+        buyPrice: '09:10:00@ 2',
+        sellPrice: '09:15:00@ 4',
+        status: 'CLOSED',
+        pnl: 400,
       },
-      // Add the remaining positions here...
-    ]
+      {
+        id: 5,
+        strategy: 'DOMAIN ARBITRAGE(BANKNIFTY)',
+        broker: 'Upstox (U789123)',
+        script: 'NIFTY15FEB2424000CE(NFO)',
+        product: 'INTRADAY',
+        side: 'BUY',
+        quantity: 400,
+        buyPrice: '09:20:00@ 5',
+        sellPrice: '09:25:00@ 8',
+        status: 'OPEN',
+        pnl: 1200,
+      },
+      {
+        id: 6,
+        strategy: 'DOMAIN HEDGING(NIFTY)',
+        broker: 'ICICI Direct (IC456789)',
+        script: 'NIFTY15FEB2425000PE(NFO)',
+        product: 'INTRADAY',
+        side: 'SELL',
+        quantity: 350,
+        buyPrice: '09:18:00@ 3',
+        sellPrice: '09:28:00@ 5',
+        status: 'CLOSED',
+        pnl: 700,
+      },
+      {
+        id: 7,
+        strategy: 'DOMAIN SWING TRADING(NIFTY)',
+        broker: 'Angel (A537412)',
+        script: 'NIFTY15FEB2426000CE(NFO)',
+        product: 'INTRADAY',
+        side: 'BUY',
+        quantity: 600,
+        buyPrice: '09:22:00@ 4',
+        sellPrice: '09:30:00@ 7',
+        status: 'OPEN',
+        pnl: 1800,
+      },
+      // Add more unique positions as needed...
+    ],
   }),
   actions: {
     async fetchPositions() {
       // In a real application, you would fetch the positions from an API
       // For now, we'll just use the hardcoded data
       // this.positions = await api.getPositions()
-    }
-  }
-})
+    },
+  },
+});

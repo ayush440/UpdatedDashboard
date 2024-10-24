@@ -5,8 +5,15 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted } from 'vue';
+import { ref, onMounted, onUnmounted, watch } from 'vue';
 import Chart from 'chart.js/auto';
+
+const props = defineProps({
+  data: {
+    type: Array,
+    required: true
+  }
+});
 
 const chartRef = ref(null);
 let chart = null;
@@ -16,9 +23,9 @@ const createChart = () => {
   chart = new Chart(ctx, {
     type: 'doughnut',
     data: {
-      labels: ['Strategy 1', 'Strategy 2', 'Strategy 3', 'Strategy 4'],
+      labels: props.data.map(item => item.name),
       datasets: [{
-        data: [55, 25, 10, 5],
+        data: props.data.map(item => item.value),
         backgroundColor: (context) => {
           const chart = context.chart;
           const { ctx, chartArea } = chart;
@@ -26,22 +33,15 @@ const createChart = () => {
             return null;
           }
 
-          // Create a gradient for Strategy 1 (#FF0000 to white)
-          const gradientRed = ctx.createLinearGradient(0, chartArea.bottom, 0, chartArea.top);
-          gradientRed.addColorStop(0, '#FF0000');
-          gradientRed.addColorStop(1, '#ffffff');
-
-          // Create a gradient for Strategy 2 (#5D5FEF to white)
-          const gradientBlue = ctx.createLinearGradient(0, chartArea.bottom, 0, chartArea.top);
-          gradientBlue.addColorStop(0, '#5D5FEF');
-          gradientBlue.addColorStop(1, '#ffffff');
-
-          return [
-            gradientRed,   // Linear gradient for Strategy 1 
-            gradientBlue,  // Linear gradient for Strategy 2
-            '#A1E3CB',     // Strategy 3 
-            '#A8C5DA'      // Strategy 4 
-          ];
+          return props.data.map((item, index) => {
+            if (index === 0 || index === 1) {
+              const gradient = ctx.createLinearGradient(0, chartArea.bottom, 0, chartArea.top);
+              gradient.addColorStop(0, item.color);
+              gradient.addColorStop(1, '#ffffff');
+              return gradient;
+            }
+            return item.color;
+          });
         },
         borderWidth: 0,
         borderRadius: 5
@@ -65,19 +65,9 @@ const createChart = () => {
               const data = chart.data;
               if (data.labels.length && data.datasets.length) {
                 return data.labels.map((label, i) => {
-                  let fillStyle;
-                  if (i === 0) {
-                    fillStyle = '#FF0000'; // Red for Strategy 1
-                  } else if (i === 1) {
-                    fillStyle = '#5D5FEF'; // Blue for Strategy 2
-                  } else if (i === 2) {
-                    fillStyle = '#A1E3CB'; // Green for Strategy 3
-                  } else if (i === 3) {
-                    fillStyle = '#A8C5DA'; // Light blue for Strategy 4
-                  }
                   return {
-                    text: `${label} ${data.datasets[0].data[i]}%`,
-                    fillStyle: fillStyle,
+                    text: `${label} ${data.datasets[0].data[i]}`,
+                    fillStyle: props.data[i].color,
                     hidden: isNaN(data.datasets[0].data[i]),
                     index: i
                   };
@@ -97,6 +87,14 @@ const createChart = () => {
   });
 }
 
+const updateChart = () => {
+  if (chart) {
+    chart.data.labels = props.data.map(item => item.name);
+    chart.data.datasets[0].data = props.data.map(item => item.value);
+    chart.update();
+  }
+};
+
 const handleResize = () => {
   if (chart) {
     chart.resize();
@@ -114,6 +112,8 @@ onUnmounted(() => {
   }
   window.removeEventListener('resize', handleResize);
 });
+
+watch(() => props.data, updateChart, { deep: true });
 </script>
 
 <style scoped>
@@ -131,5 +131,4 @@ onUnmounted(() => {
     max-width: 100%;
   }
 }
-
 </style>

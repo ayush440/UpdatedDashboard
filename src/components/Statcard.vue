@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-white rounded-lg p-6 shadow-sm border-black">
+  <div class="bg-white rounded-lg p-6 shadow-sm border border-gray-200">
     <div class="flex flex-col items-start">
       <div class="bg-indigo-100 rounded-full p-3 mb-4">
         <component :is="iconComponent" class="w-6 h-6 text-indigo-600" />
@@ -10,7 +10,8 @@
         {{ change }}
       </span>
     </div>
-  </div>
+</div>
+
 </template>
 
 <script setup>
