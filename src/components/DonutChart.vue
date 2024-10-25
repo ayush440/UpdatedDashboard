@@ -158,7 +158,6 @@ watch(() => props.data, updateChart, { deep: true });
   text-overflow: ellipsis;
   width: 120px; /* Adjust width based on your preference */
   cursor: pointer;
-  
 }
 
 .legend-value {
