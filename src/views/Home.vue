@@ -14,10 +14,10 @@
             <DonutChart :data="currentData.profitData" />
             
             
-            <div class="bg-white rounded-lg shadow-sm p-6">
-              <h2 class="text-lg font-semibold mb-4">Today's Sales</h2>
+            <div class="bg-white rounded-lg shadow-sm p-6 mr-2">
+              <h2 class="text-lg font-semibold mb-4 mt-4 text-[#05004E] ">Today's Sales</h2>
               
-              <p class="text-xs text-gray-500 mb-4">Sales Summary</p>
+              <p class="text-xs text-gray-500 mb-8 -mt-3 ">Sales Summary</p>
               <div class="grid grid-cols-3 gap-4">
                 <StatCard
                   v-for="(stat, index) in currentData.statsData"

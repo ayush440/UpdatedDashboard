@@ -8,19 +8,25 @@
         <h1 class="text-xl font-semibold">Hello {{ authStore.user?.name || 'Social User' }} 👋🏻</h1>
       </div>
       <div class="flex items-center bg-gray-100 rounded-full">
-        <button 
-          :class="[' px-4 py-2 rounded-l-full', mode === 'Paper' ? 'bg-indigo-600 text-white' : 'text-gray-700']"
-          @click="changeMode('Paper')"
-        >
-          Paper
-        </button>
-        <button 
-          :class="['px-4 py-2 rounded-r-full', mode === 'Live' ? 'bg-indigo-600 text-white' : 'text-gray-700']"
-          @click="changeMode('Live')"
-        >
-          Live
-        </button>
-      </div>
+  <button 
+    :class="[
+      'px-4 py-2 rounded-l-full transition-colors duration-300 ease-in-out',
+      mode === 'Paper' ? 'bg-indigo-600 text-white' : 'text-gray-700'
+    ]"
+    @click="changeMode('Paper')"
+  >
+    Paper
+  </button>
+  <button 
+    :class="[
+      'px-4 py-2 rounded-r-full transition-colors duration-300 ease-in-out',
+      mode === 'Live' ? 'bg-indigo-600 text-white' : 'text-gray-700'
+    ]"
+    @click="changeMode('Live')"
+  >
+    Live
+  </button>
+</div>
     </div>
   </header>
 </template>
